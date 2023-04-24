@@ -1,6 +1,6 @@
 import {StyleSheet, Image, Text, View} from 'react-native';
 import React from 'react';
-
+import {FontWeight} from '../../typeDefines';
 const UserChat = () => {
   return (
     <View>
@@ -43,18 +43,7 @@ const UserChat = () => {
 };
 
 export default UserChat;
-type FontWeight =
-  | 'normal'
-  | 'bold'
-  | '100'
-  | '200'
-  | '300'
-  | '400'
-  | '500'
-  | '600'
-  | '700'
-  | '800'
-  | '900';
+
 const styles = StyleSheet.create({
   Userchat: {},
 

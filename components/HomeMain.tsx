@@ -1,31 +1,54 @@
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
-import InstaStories from './InstaStories';
+import InstaStories from './story/InstaStories';
 import InstaPosts from './posts/InstaPosts';
 import FooterNavigation from './FooterNavigation';
-
+import {useNavigation} from '@react-navigation/native';
+import {FontWeight} from '../typeDefines';
 const HomeMain = () => {
+  const navigation = useNavigation();
   return (
     <View style={{height: '100%'}}>
       <View style={styles.header}>
         <View style={styles.headerContainer}>
           <View style={styles.instalogo}>
-            <Image source={require('../assets/instaLogo.png')}></Image>
+            <Image
+              style={{width: 106, height: 30}}
+              source={require('../assets/instaLogo.png')}></Image>
           </View>
           <View style={styles.headerRight}>
             <View style={styles.likes}>
-              <Image source={require('../assets/like.png')}></Image>
+              <Image
+                source={require('../assets/like.png')}
+                style={{width: 24, height: 24}}></Image>
             </View>
             <View style={styles.messages}>
-              <Image
-                source={require('../assets/messageLogo.png')}
-                style={{width: 23, height: 20, resizeMode: 'contain'}}></Image>
+              <Pressable onPress={() => navigation.navigate('Chats')}>
+                <Image
+                  source={require('../assets/chat.png')}
+                  style={{
+                    width: 24,
+                    height: 24,
+                    resizeMode: 'contain',
+                  }}></Image>
+              </Pressable>
             </View>
           </View>
         </View>
       </View>
 
-      <ScrollView style={{marginBottom: 30}}>
+      <ScrollView
+        style={{marginBottom: 30}}
+        alwaysBounceHorizontal={false}
+        alwaysBounceVertical={false}
+        bounces={false}>
         <InstaStories />
         <InstaPosts />
         <InstaPosts />
@@ -37,18 +60,7 @@ const HomeMain = () => {
 };
 
 export default HomeMain;
-type FontWeight =
-  | 'normal'
-  | 'bold'
-  | '100'
-  | '200'
-  | '300'
-  | '400'
-  | '500'
-  | '600'
-  | '700'
-  | '800'
-  | '900';
+
 const styles = StyleSheet.create({
   header: {
     zIndex: 2,

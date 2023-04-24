@@ -1,7 +1,7 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import InstaStories from '../InstaStories';
-
+import InstaStories from '../story/InstaStories';
+import {FontWeight} from '../../typeDefines';
 const ProfileBio = () => {
   return (
     <View>
@@ -173,18 +173,7 @@ const ProfileBio = () => {
 };
 
 export default ProfileBio;
-type FontWeight =
-  | 'normal'
-  | 'bold'
-  | '100'
-  | '200'
-  | '300'
-  | '400'
-  | '500'
-  | '600'
-  | '700'
-  | '800'
-  | '900';
+
 const styles = StyleSheet.create({
   BioBox: {paddingHorizontal: 13},
   PhotoBox: {width: 96, height: 96},

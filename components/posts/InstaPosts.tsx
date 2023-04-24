@@ -1,5 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {FontWeight} from '../../typeDefines';
+import PostSwipers from './PostSwipers';
 
 const InstaPosts = () => {
   return (
@@ -28,7 +30,7 @@ const InstaPosts = () => {
             <Text style={styles.postMenu}>...</Text>
           </View>
         </View>
-        <View style={styles.postPhotu}>
+        {/* <View style={styles.postPhotu}>
           <View
             style={{
               width: 34,
@@ -60,24 +62,27 @@ const InstaPosts = () => {
               uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
             }}
             style={{width: 375, height: 375, resizeMode: 'cover'}}></Image>
-        </View>
+        </View> */}
+        <PostSwipers />
         <View style={styles.LCSsave}>
           <View style={styles.LCSsaveLeft}>
             <Image
               source={require('../../assets/like.png')}
-              style={{marginLeft: 12, width: 24, height: 21}}></Image>
+              style={{marginLeft: 16, width: 24, height: 24}}></Image>
             <Image
-              source={require('../../assets/Comment.png')}
-              style={{marginLeft: 12, width: 22, height: 23}}></Image>
+              source={require('../../assets/comment.png')}
+              style={{marginLeft: 16, width: 24, height: 24}}></Image>
             <Image
-              source={require('../../assets/messageLogo.png')}
-              style={{marginLeft: 12, width: 23, height: 20}}></Image>
+              source={require('../../assets/send.png')}
+              style={{marginLeft: 16, width: 24, height: 24}}></Image>
           </View>
           <View style={styles.LCSsaveMid}>
             <Text style={[styles.postMenu, {fontSize: 30}]}>...</Text>
           </View>
           <View style={styles.LCSsaveRight}>
-            <Image source={require('../../assets/save.png')}></Image>
+            <Image
+              source={require('../../assets/save.png')}
+              style={{width: 24, height: 22}}></Image>
           </View>
         </View>
         <View>
@@ -117,30 +122,8 @@ const InstaPosts = () => {
     </View>
   );
 };
-{
-  /* <Text
-              style={[
-                styles.postMenu,
-                {
-                  fontSize: 35,
-                },
-              ]}>
-              ...
-            </Text> */
-}
+
 export default InstaPosts;
-type FontWeight =
-  | 'normal'
-  | 'bold'
-  | '100'
-  | '200'
-  | '300'
-  | '400'
-  | '500'
-  | '600'
-  | '700'
-  | '800'
-  | '900';
 
 const styles = StyleSheet.create({
   postContainer: {},

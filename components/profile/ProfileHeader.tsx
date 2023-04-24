@@ -1,5 +1,6 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {FontWeight} from '../../typeDefines';
 const ProfileHeader = () => {
   return (
     <View style={styles.ChatHeaderContainer}>
@@ -31,25 +32,16 @@ const ProfileHeader = () => {
           flexDirection: 'row',
           position: 'absolute',
           right: 20,
+          width: 24,
+          height: 24,
         }}
-        source={require('../..//assets/Menu.png')}></Image>
+        source={require('../../assets/Menu.png')}></Image>
     </View>
   );
 };
 
 export default ProfileHeader;
-type FontWeight =
-  | 'normal'
-  | 'bold'
-  | '100'
-  | '200'
-  | '300'
-  | '400'
-  | '500'
-  | '600'
-  | '700'
-  | '800'
-  | '900';
+
 const styles = StyleSheet.create({
   ChatHeaderContainer: {
     width: '100%',
