@@ -5,16 +5,12 @@ import ProfileHeader from './ProfileHeader';
 import ProfileBio from './ProfileBio';
 import FooterNavigation from '../FooterNavigation';
 import {FontWeight} from '../../typeDefines';
+import {flingGestureHandlerProps} from 'react-native-gesture-handler/lib/typescript/handlers/FlingGestureHandler';
 const Profile = () => {
   return (
-    <View style={{height: '100%'}}>
-      <View>
-        <ProfileHeader />
-      </View>
-      <ScrollView style={{marginBottom: 60}}>
-        <ProfileBio />
-      </ScrollView>
-      <FooterNavigation />
+    <View style={{flex: 1}}>
+      <ProfileHeader />
+      <ProfileBio />
     </View>
   );
 };

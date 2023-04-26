@@ -7,7 +7,7 @@ import SearchBox from '../SearchBox';
 
 const Chats = () => {
   return (
-    <>
+    <View style={{flex: 1}}>
       <ChatHeader />
 
       <SearchBox />
@@ -27,7 +27,7 @@ const Chats = () => {
         <UserChat />
         <UserChat />
       </ScrollView>
-    </>
+    </View>
   );
 };
 

@@ -27,8 +27,8 @@ const UserChat = () => {
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{color: 'rgba(0, 0, 0, 0.4)'}}>
                   Have a nice day, bro!
+                  <Text style={styles.time}>{'    '}now</Text>
                 </Text>
-                <Text style={styles.time}>now</Text>
               </View>
             </View>
           </View>
@@ -81,8 +81,6 @@ const styles = StyleSheet.create({
     width: '72%',
   },
   time: {
-    position: 'absolute',
-    right: 0,
     fontWeight: '400' as FontWeight,
     fontSize: 13,
     lineHeight: 16,

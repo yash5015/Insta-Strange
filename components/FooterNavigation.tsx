@@ -8,61 +8,43 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-
-const FooterNavigation = () => {
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import HomeMain from './HomeMain';
+import SearchMain from './Search/SearchMain';
+import AddpostMain from './AddPost/AddpostMain';
+import ReelMain from './Reels/ReelMain';
+import Profile from './profile/Profile';
+import Notification from './notifications/Notification';
+import CustomFooterNavigation from './CustomFooterNavigation';
+import MyTabBar from './MyTabBar';
+const Tab = createBottomTabNavigator();
+const FooterNavigation = ({...params}) => {
   const navigation = useNavigation();
   return (
-    <View style={styles.footer}>
-      <View style={styles.footerContainer}>
-        <View style={styles.gotoHome}>
-          <Pressable onPress={() => navigation.navigate('HomeMain')}>
-            <Image
-              style={styles.footerIcons}
-              source={require('../assets/home-fill.png')}></Image>
-          </Pressable>
-        </View>
-        <Pressable onPress={() => navigation.navigate('HomeMain')}>
-          <View style={styles.gotoSearch}>
-            <Image
-              style={styles.footerIcons}
-              source={require('../assets/search.png')}></Image>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('StoryView')}>
-          <View style={styles.gotoAddPost}>
-            <Image
-              style={styles.footerIcons}
-              source={require('../assets/AddPost.png')}></Image>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('PostSwipers')}>
-          <View style={styles.gotoReels}>
-            <Image
-              source={require('../assets/reelsIcon.png')}
-              style={styles.footerIcons}></Image>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Profile')}>
-          <View style={styles.gotoProfile}>
-            <View style={styles.storyProfile}>
-              <Image
-                source={{
-                  uri: 'https://i.pinimg.com/474x/9c/d9/4d/9cd94db59046305e5d4e0190429cd750--amazing-sunsets-summer-beach.jpg',
-                }}
-                style={{
-                  position: 'absolute',
-                  alignSelf: 'center',
-
-                  width: 22,
-                  height: 22,
-                  borderRadius: 50,
-                  resizeMode: 'contain',
-                }}></Image>
-            </View>
-          </View>
-        </Pressable>
-      </View>
-    </View>
+    // <CustomFooterNavigation {...props} />
+    <Tab.Navigator
+      tabBar={props => <CustomFooterNavigation {...props} />}
+      initialRouteName={'HomeMain'}
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tab.Screen name="HomeMain" component={HomeMain} />
+      <Tab.Screen name="SearchMain" component={SearchMain} />
+      <Tab.Screen
+        name="AddpostMain"
+        component={AddpostMain}
+        options={{tabBarStyle: {display: 'none'}}}
+      />
+      <Tab.Screen name="ReelMain" component={ReelMain} />
+      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 

@@ -2,43 +2,40 @@ import {Image, StyleSheet, Text, View, Pressable} from 'react-native';
 import React from 'react';
 import {FontWeight} from '../../typeDefines';
 import {useNavigation} from '@react-navigation/native';
-const ChatHeader = () => {
+
+const NotificatonHeader = () => {
   const navigation = useNavigation();
   return (
-    <View style={styles.ChatHeaderContainer}>
-      <Pressable onPress={() => navigation.navigate('FooterNavigation')}>
+    <View style={styles.NotiHeaderContainer}>
+      <Pressable onPress={() => navigation.navigate('HomeMain')}>
         <Image source={require('../../assets/back.png')}></Image>
       </Pressable>
 
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View>
         <Text
           style={{
             color: '#000',
             fontSize: 22,
             fontWeight: '600' as FontWeight,
-            marginRight: 5,
+            marginLeft: 20,
           }}>
-          jacob_w
+          Notification
         </Text>
-        <Image source={require('../../assets/down.png')}></Image>
       </View>
-
-      <Image
-        style={{width: 22, height: 22}}
-        source={require('../../assets/plus.png')}></Image>
     </View>
   );
 };
 
-export default ChatHeader;
+export default NotificatonHeader;
 
 const styles = StyleSheet.create({
-  ChatHeaderContainer: {
+  NotiHeaderContainer: {
     width: '100%',
     height: 55,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingHorizontal: 12,
     alignItems: 'center',
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 0.5,
   },
 });

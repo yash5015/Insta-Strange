@@ -1,10 +1,20 @@
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import InstaStories from '../story/InstaStories';
 import {FontWeight} from '../../typeDefines';
+
+import ProfilePostsSection from './ProfilePostsSection';
+const {height, width} = Dimensions.get('window');
 const ProfileBio = () => {
   return (
-    <View>
+    <ScrollView contentContainerStyle={{flex: 1}}>
       <View style={styles.BioBox}>
         <View
           style={{
@@ -65,110 +75,14 @@ const ProfileBio = () => {
       <View style={styles.highlights}>
         <InstaStories />
       </View>
-      <View style={styles.postTypeHeader}>
-        <View style={styles.totalPosts}>
-          <Image source={require('../../assets/GridIcon.png')}></Image>
-        </View>
-        <View style={styles.taggedPosts}>
-          <Image source={require('../../assets/TagIcon.png')}></Image>
-        </View>
-      </View>
-      <View style={styles.gridPostcontainer}>
-        <View style={styles.postContainer}>
-          <View style={styles.myPostRow}>
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-            <View style={styles.myPost}>
-              <Image
-                source={{
-                  uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-                }}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                }}></Image>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          width: width,
+        }}>
+        <ProfilePostsSection />
+      </ScrollView>
+    </ScrollView>
   );
 };
 
@@ -210,42 +124,5 @@ const styles = StyleSheet.create({
   highlights: {
     width: '94%',
     alignSelf: 'center',
-  },
-  gridPostcontainer: {
-    // backgroundColor: 'yellow',
-    // flex: 1,
-  },
-  postTypeHeader: {
-    flexDirection: 'row',
-    height: 44,
-    alignItems: 'center',
-  },
-  totalPosts: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    height: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
-  },
-  taggedPosts: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    height: '100%',
-  },
-  postContainer: {
-    // width: '100%',
-    flex: 1,
-  },
-  myPostRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-  },
-  myPost: {
-    width: '33.1%',
-    height: 120,
-    margin: 0.3,
   },
 });

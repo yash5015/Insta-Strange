@@ -15,7 +15,7 @@ import {FontWeight} from '../typeDefines';
 const HomeMain = () => {
   const navigation = useNavigation();
   return (
-    <View style={{height: '100%'}}>
+    <View style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.headerContainer}>
           <View style={styles.instalogo}>
@@ -25,9 +25,11 @@ const HomeMain = () => {
           </View>
           <View style={styles.headerRight}>
             <View style={styles.likes}>
-              <Image
-                source={require('../assets/like.png')}
-                style={{width: 24, height: 24}}></Image>
+              <Pressable onPress={() => navigation.navigate('Notification')}>
+                <Image
+                  source={require('../assets/like.png')}
+                  style={{width: 24, height: 24}}></Image>
+              </Pressable>
             </View>
             <View style={styles.messages}>
               <Pressable onPress={() => navigation.navigate('Chats')}>
@@ -45,7 +47,6 @@ const HomeMain = () => {
       </View>
 
       <ScrollView
-        style={{marginBottom: 30}}
         alwaysBounceHorizontal={false}
         alwaysBounceVertical={false}
         bounces={false}>
@@ -54,7 +55,7 @@ const HomeMain = () => {
         <InstaPosts />
         <InstaPosts />
       </ScrollView>
-      <FooterNavigation />
+      {/* <FooterNavigation /> */}
     </View>
   );
 };
