@@ -16,44 +16,51 @@ const {width, height} = Dimensions.get('window');
 const ProfilePostView = ({route, navigation}) => {
   const {ImgIndex, postsArr} = route.params;
   const flatListRef = useRef(null);
-  const [PostContainerHeight, setPostContainerHeight] = useState(0);
+  const [PostContainerHeight, setPostContainerHeight] = useState();
   const scrollToIndex = index => {
     console.log('inside function');
     flatListRef.current.scrollToIndex({animated: false, index});
   };
-  const onLayoutpostContainerGetMeasure = event => {
-    const {x, y, PostContainerheight, PostContainerwidth} =
-      event.nativeEvent.layout;
-    console.log(PostContainerheight);
-    setPostContainerHeight(PostContainerheight);
-  };
+  // const onLayoutpostContainerGetMeasure = event => {
+  //   const {x, y, PostContainerheight, PostContainerwidth} =
+  //     event.nativeEvent.layout;
+  //   console.log(PostContainerheight);
+  //   setPostContainerHeight(PostContainerheight);
+  // };
   useEffect(() => {
     scrollToIndex(ImgIndex);
   }, [ImgIndex]);
+
+  const handleLayout = event => {
+    console.log('handleLayout');
+    const {height} = event.nativeEvent.layout;
+    setPostContainerHeight(height);
+  };
 
   return (
     <View>
       {postsArr ? (
         <FlatList
-          // onScrollToIndexFailed={({index, averageItemLength}) => {
-          //   flatListRef.current?.scrollToOffset({
-          //     offset: index * averageItemLength,
-          //     animated: false,
-          //   });
-          //   console.log('failed to load', index, averageItemLength);
-          // }}
-          getItemLayout={(data, index) => ({
-            length: 590,
-            offset: 590 * index,
-            index,
-          })}
+          onScrollToIndexFailed={({index, averageItemLength}) => {
+            flatListRef.current?.scrollToOffset({
+              offset: index * averageItemLength,
+              animated: false,
+            });
+            console.log('failed to load', index, averageItemLength);
+          }}
+          // getItemLayout={(data, index) => ({
+          //   length: PostContainerHeight,
+          //   offset: PostContainerHeight * index,
+          //   index,
+          // })}
           ref={flatListRef}
           data={postsArr}
           renderItem={({item, index}) => (
             <View
               key={index}
               style={styles.postContainer}
-              onLayout={onLayoutpostContainerGetMeasure}>
+              // onLayout={handleLayout}
+            >
               <View style={styles.PostBox}>
                 <View style={styles.postHead}>
                   <View style={styles.postUser}>
