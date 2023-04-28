@@ -1,8 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {FontWeight} from '../../typeDefines';
 import PostSwipers from './PostSwipers';
-
 const InstaPosts = () => {
   return (
     <View style={styles.postContainer}>
@@ -76,9 +75,8 @@ const InstaPosts = () => {
               source={require('../../assets/send.png')}
               style={{marginLeft: 16, width: 24, height: 24}}></Image>
           </View>
-          <View style={styles.LCSsaveMid}>
-            <Text style={[styles.postMenu, {fontSize: 30}]}>...</Text>
-          </View>
+
+          {/* <Text style={[styles.postMenu, {fontSize: 30}]}>...</Text> */}
           <View style={styles.LCSsaveRight}>
             <Image
               source={require('../../assets/save.png')}

@@ -21,8 +21,10 @@
     "@rneui/themed": "^4.0.0-rc.7",
     "react": "18.2.0",
     "react-native": "0.71.6",
+    "react-native-animated-pagination-dot": "^0.4.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-insta-story": "^1.1.9",
+    "react-native-instagram-reels": "^1.0.1",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-pager-view": "^6.2.0",
     "react-native-safe-area-context": "^4.5.1",
@@ -30,6 +32,7 @@
     "react-native-screens-swiper": "^1.2.6",
     "react-native-stories-view": "^1.0.9",
     "react-native-swiper": "^1.6.0-rc.3",
+    "react-native-swiper-flatlist": "^3.2.2",
     "react-native-tab-view": "^3.5.1",
     "react-native-vector-icons": "^9.2.0",
     "swiper": "^9.2.3"

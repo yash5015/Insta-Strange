@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   highlights: {
-    width: '94%',
+    width: width,
     alignSelf: 'center',
   },
 });

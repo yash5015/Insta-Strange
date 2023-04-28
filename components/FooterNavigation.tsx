@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Pressable,
   ScrollView,
@@ -16,7 +17,7 @@ import ReelMain from './Reels/ReelMain';
 import Profile from './profile/Profile';
 import Notification from './notifications/Notification';
 import CustomFooterNavigation from './CustomFooterNavigation';
-import MyTabBar from './MyTabBar';
+import ProfilePostView from './ProfilePostView/ProfilePostView';
 const Tab = createBottomTabNavigator();
 const FooterNavigation = ({...params}) => {
   const navigation = useNavigation();
@@ -42,6 +43,17 @@ const FooterNavigation = ({...params}) => {
         component={Notification}
         options={{
           tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="ProfilePostView"
+        component={ProfilePostView}
+        options={{
+          headerLeft: () => (
+            <Text onPress={() => navigation.navigate('Profile')}>Back</Text>
+          ),
+          headerTitle: 'Posts',
+          headerShown: true,
         }}
       />
     </Tab.Navigator>

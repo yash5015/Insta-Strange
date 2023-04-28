@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {Text, View, Image, Dimensions, StyleSheet} from 'react-native';
 import Swiper from 'react-native-swiper';
 const {width} = Dimensions.get('window');
-
+import PaginationDot from 'react-native-animated-pagination-dot';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
 const renderPagination = (index, total, context) => {
   return (
     <View style={styles.paginationStyle}>
@@ -12,98 +13,68 @@ const renderPagination = (index, total, context) => {
     </View>
   );
 };
+const postImages = [
+  {
+    id: 1,
+    imgurl:
+      'https://i.pinimg.com/474x/9c/d9/4d/9cd94db59046305e5d4e0190429cd750--amazing-sunsets-summer-beach.jpg',
+  },
+  {
+    id: 2,
+    imgurl:
+      'https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+  },
+  {
+    id: 3,
+    imgurl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSngTgspjPM83-qZ3u1IgMgudydzr0eOfTA53jTekMNvy8jzG-53ZAnrm0moEcSjdcc96U&usqp=CAU',
+  },
+  {
+    id: 4,
+    imgurl:
+      'https://img.freepik.com/free-photo/half-profile-image-handsome-young-caucasian-man-with-good-skin-brown-eyes-black-stylish-hair-stubble-posing-isolated-against-blank-wall-looking-front-him-smiling_343059-4560.jpg',
+  },
+  {
+    id: 5,
+    imgurl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSngTgspjPM83-qZ3u1IgMgudydzr0eOfTA53jTekMNvy8jzG-53ZAnrm0moEcSjdcc96U&usqp=CAU',
+  },
+];
 
-const renderDots = () => {
-  return (
-    <View
-      style={{
-        backgroundColor: 'rgba(0,0,0,.2)',
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginLeft: 3,
-        marginRight: 3,
-        marginTop: 3,
-        marginBottom: 3,
-        zIndex: 1,
-      }}
-    />
-  );
-};
-
-const renderActiveDot = () => {
-  return (
-    <View
-      style={{
-        backgroundColor: '#007aff',
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginLeft: 3,
-        marginRight: 3,
-        marginTop: 3,
-        marginBottom: 3,
-      }}
-    />
-  );
-};
 const PostSwipers = (): JSX.Element => {
+  const [curPage, setCurPage] = useState(0);
   return (
-    <Swiper
-      style={styles.wrapper}
-      renderPagination={renderPagination}
-      loop={false}
-      dot={renderDots}
-      activeDot={renderActiveDot}>
-      <View
-        style={styles.slide}
-        // title={
-        //   <Text numberOfLines={1}>Aussie tourist dies at Bali hotel</Text>
-        // }
-      >
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://i.pinimg.com/474x/9c/d9/4d/9cd94db59046305e5d4e0190429cd750--amazing-sunsets-summer-beach.jpg',
-          }}
-        />
+    <View>
+      <Swiper
+        style={styles.wrapper}
+        renderPagination={renderPagination}
+        loop={false}
+        onIndexChanged={index => {
+          setCurPage(index);
+        }}>
+        {postImages.map((item, id) => (
+          <View key={id} style={styles.slide}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: `${item.imgurl}`,
+              }}
+            />
+          </View>
+        ))}
+      </Swiper>
+
+      <View style={styles.LCSsave}>
+        <View style={styles.LCSsaveMid}>
+          <PaginationDot
+            activeDotColor={'#3897F0'}
+            inactiveDotColor={'#00000075'}
+            curPage={curPage}
+            maxPage={postImages.length}
+          />
+        </View>
       </View>
-      <View
-        style={styles.slide}
-        // title={<Text numberOfLines={1}>Big lie behind Nine’s new show</Text>}
-      >
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-          }}
-        />
-      </View>
-      <View
-        style={styles.slide}
-        // title={<Text numberOfLines={1}>Why Stone split from Garfield</Text>}
-      >
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSngTgspjPM83-qZ3u1IgMgudydzr0eOfTA53jTekMNvy8jzG-53ZAnrm0moEcSjdcc96U&usqp=CAU',
-          }}
-        />
-      </View>
-      <View
-        style={styles.slide}
-        // title={
-        //   <Text numberOfLines={1}>Learn from Kim K to land that job</Text>
-        // }
-      >
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://img.freepik.com/free-photo/half-profile-image-handsome-young-caucasian-man-with-good-skin-brown-eyes-black-stylish-hair-stubble-posing-isolated-against-blank-wall-looking-front-him-smiling_343059-4560.jpg',
-          }}
-        />
-      </View>
-    </Swiper>
+    </View>
   );
 };
 
@@ -146,5 +117,23 @@ const styles = StyleSheet.create({
   paginationText: {
     // color: 'white',
     // fontSize: 20,
+  },
+  LCSsave: {
+    width: '100%',
+    position: 'absolute',
+    bottom: -30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+  },
+  LCSsaveMid: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

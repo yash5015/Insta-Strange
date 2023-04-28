@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeMain from './HomeMain';
 import Chats from './chats/Chats';
 import FooterNavigation from './FooterNavigation';
+import ProfilePostView from './ProfilePostView/ProfilePostView';
 const RootNavigation = () => {
   const Stack = createNativeStackNavigator();
   return (
@@ -16,6 +17,14 @@ const RootNavigation = () => {
         <Stack.Screen name="FooterNavigation" component={FooterNavigation} />
         <Stack.Screen name="HomeMain" component={HomeMain} />
         <Stack.Screen name="Chats" component={Chats} />
+        <Stack.Screen
+          name="ProfilePostView"
+          component={ProfilePostView}
+          options={{
+            headerTitle: 'Posts',
+            headerShown: true,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
