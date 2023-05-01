@@ -2,7 +2,6 @@ import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Mypost from './MyPosts/Mypost';
-import {Icon} from '@rneui/themed';
 
 import Taggedpost from './MyPosts/Taggedpost';
 const Tab = createMaterialTopTabNavigator();

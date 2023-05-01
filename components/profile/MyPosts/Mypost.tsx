@@ -5,11 +5,7 @@ import {
   View,
   TouchableOpacity,
   Modal,
-  Alert,
-  Pressable,
   Dimensions,
-  PanResponder,
-  Animated,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Image} from '@rneui/base';
@@ -17,6 +13,7 @@ import LongPressProfileView from '../../ProfilePostView/LongPressProfileView';
 import InstaPosts from '../../posts/InstaPosts';
 import {FontWeight} from '../../../typeDefines';
 import {useNavigation} from '@react-navigation/native';
+import {FlatList} from 'react-native-gesture-handler';
 const {width, height} = Dimensions.get('window');
 const Mypost = () => {
   const navigation = useNavigation();
@@ -35,10 +32,8 @@ const Mypost = () => {
 
   let postArray = [];
   const renderPosts = () => {
-    for (let i = 0; i < 19; i++) {
-      postArray.push(
-        `https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg`,
-      );
+    for (let i = 0; i < 160; i++) {
+      postArray.push(`../../../assets/sampleImg1.jpg`);
     }
     // console.log(postArray);
   };
@@ -63,6 +58,9 @@ const Mypost = () => {
   }, []);
   return (
     <>
+      {/* onLongPress={() => handleSingleProfileVew(id)}
+                    {...panResponder.panHandlers}
+                     onPressOut={() => setModalVisible(!modalVisible)} */}
       <ScrollView
         style={styles.gridPostcontainer}
         scrollEnabled={Scrollenabled}>
@@ -73,18 +71,10 @@ const Mypost = () => {
                   <TouchableOpacity
                     key={id}
                     style={styles.myPost}
-                    onPress={() => handleProfilePostView(id)}
-                    // onLongPress={() => handleSingleProfileVew(id)}
-                    // // {...panResponder.panHandlers}
-                    // onPressOut={() => setModalVisible(!modalVisible)}
-                  >
-                    <View>
-                      <Image
-                        source={{
-                          uri: `${item}`,
-                        }}
-                        style={styles.myPostImg}></Image>
-                    </View>
+                    onPress={() => handleProfilePostView(id)}>
+                    <Image
+                      source={require(`../../../assets/sampleImg1.jpg`)}
+                      style={styles.myPostsmImg}></Image>
                   </TouchableOpacity>
                 ))
               : null}
@@ -180,12 +170,14 @@ const styles = StyleSheet.create({
   },
   myPost: {
     width: '33.1%',
-    height: 120,
+    // height: 120,
+    aspectRatio: 1,
     margin: 0.3,
   },
-  myPostImg: {
+  myPostsmImg: {
     width: '100%',
     height: '100%',
+    resizeMode: 'cover',
   },
   // /////////////////////////
   centeredView: {

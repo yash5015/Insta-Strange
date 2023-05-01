@@ -75,6 +75,7 @@ const ProfileBio = () => {
       <View style={styles.highlights}>
         <InstaStories />
       </View>
+      {/* <ProfilePostsSection /> */}
       <ScrollView
         contentContainerStyle={{
           flex: 1,

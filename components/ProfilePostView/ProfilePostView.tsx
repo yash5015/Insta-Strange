@@ -6,6 +6,8 @@ import {
   ScrollView,
   View,
   Button,
+  ActivityIndicator,
+  VirtualizedList,
 } from 'react-native';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {FontWeight} from '../../typeDefines';
@@ -18,16 +20,17 @@ const ProfilePostView = ({route, navigation}) => {
   const flatListRef = useRef(null);
   const [PostContainerHeight, setPostContainerHeight] = useState();
   const scrollToIndex = index => {
-    console.log('inside function');
+    console.log('inside function', index);
     flatListRef.current.scrollToIndex({animated: false, index});
   };
-  // const onLayoutpostContainerGetMeasure = event => {
-  //   const {x, y, PostContainerheight, PostContainerwidth} =
-  //     event.nativeEvent.layout;
-  //   console.log(PostContainerheight);
-  //   setPostContainerHeight(PostContainerheight);
-  // };
+  const scroltoindexfailed = ({info}) => {
+    const wait = new Promise(resolve => setTimeout(resolve, 2000));
+    wait.then(() => {
+      scrollToIndex(info.index);
+    });
+  };
   useEffect(() => {
+    console.log('again');
     scrollToIndex(ImgIndex);
   }, [ImgIndex]);
 
@@ -36,142 +39,150 @@ const ProfilePostView = ({route, navigation}) => {
     const {height} = event.nativeEvent.layout;
     setPostContainerHeight(height);
   };
+  const getItem = (_data, index) => ({
+    id: Math.random().toString(12).substring(0),
+    title: `Item ${index + 1}`,
+  });
 
+  const getItemCount = _data => postsArr.length;
+  const loading = () => {
+    return (
+      <View style={{flex: 1, backgroundColor: '#00075'}}>
+        <ActivityIndicator />;
+      </View>
+    );
+  };
+  const renderItem = ({item, index}) => (
+    <View
+      key={index}
+      style={styles.postContainer}
+      // onLayout={handleLayout}
+    >
+      <View style={styles.PostBox}>
+        <View style={styles.postHead}>
+          <View style={styles.postUser}>
+            <Image
+              style={styles.postImg}
+              source={{
+                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZvNXJYdl0uUzKj7gqgpe_OxRtw2FFvH21k0Pyq0Q3Eh8X49bKtZlLjajfU2erdn7BQA&usqp=CAU',
+              }}></Image>
+            <View style={{marginLeft: 10}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text style={styles.name}>joshua_I </Text>
+                <Image
+                  style={{width: 12, height: 12}}
+                  source={{
+                    uri: 'https://www.pinpng.com/pngs/m/57-577224_free-png-download-instagram-verified-logo-png-images.png',
+                  }}></Image>
+                <Text>{index}</Text>
+              </View>
+              <Text style={styles.postAddress}>Tokyo, Japan</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.postMenu}>...</Text>
+          </View>
+        </View>
+
+        {/* <PostSwipers /> */}
+        <View style={styles.slide}>
+          <Image
+            style={styles.image}
+            source={require('../../assets/sampleImg1.jpg')}
+          />
+        </View>
+        <View style={styles.LCSsave}>
+          <View style={styles.LCSsaveLeft}>
+            <Image
+              source={require('../../assets/like.png')}
+              style={{
+                marginLeft: 16,
+                width: 24,
+                height: 24,
+              }}></Image>
+            {/* <LikeButton /> */}
+            <Image
+              source={require('../../assets/comment.png')}
+              style={{
+                marginLeft: 16,
+                width: 24,
+                height: 24,
+              }}></Image>
+            <Image
+              source={require('../../assets/send.png')}
+              style={{
+                marginLeft: 16,
+                width: 24,
+                height: 24,
+              }}></Image>
+          </View>
+
+          {/* <Text style={[styles.postMenu, {fontSize: 30}]}>...</Text> */}
+          <View style={styles.LCSsaveRight}>
+            <Image
+              source={require('../../assets/save.png')}
+              style={{width: 24, height: 22}}></Image>
+          </View>
+        </View>
+        <View>
+          <View style={{padding: 16}}>
+            <View style={styles.LikedBy}>
+              <Image
+                source={{
+                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSngTgspjPM83-qZ3u1IgMgudydzr0eOfTA53jTekMNvy8jzG-53ZAnrm0moEcSjdcc96U&usqp=CAU',
+                }}
+                style={{
+                  width: 17,
+                  height: 17,
+                  borderRadius: 50,
+                  marginRight: 8,
+                }}></Image>
+              <Text>
+                Liked by{' '}
+                <Text style={{fontWeight: '500' as FontWeight}}>
+                  craig_love
+                </Text>{' '}
+                and{' '}
+                <Text style={{fontWeight: '500' as FontWeight}}>
+                  121 others
+                </Text>
+              </Text>
+            </View>
+
+            <View style={styles.postComments}>
+              <Text>
+                <Text style={{fontWeight: '500' as FontWeight}}>joshua_I</Text>{' '}
+                The game in Japan was amazng and I want to share some photos
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
   return (
     <View>
       {postsArr ? (
-        <FlatList
-          onScrollToIndexFailed={({index, averageItemLength}) => {
-            flatListRef.current?.scrollToOffset({
-              offset: index * averageItemLength,
-              animated: false,
-            });
-            console.log('failed to load', index, averageItemLength);
+        <VirtualizedList
+          ref={flatListRef}
+          getItemCount={getItemCount}
+          getItem={getItem}
+          maxToRenderPerBatch={2 * postsArr.length + 1}
+          windowSize={2 * postsArr.length + 1}
+          onScrollToIndexFailed={info => {
+            scroltoindexfailed(info);
           }}
           // getItemLayout={(data, index) => ({
           //   length: PostContainerHeight,
           //   offset: PostContainerHeight * index,
           //   index,
           // })}
-          ref={flatListRef}
           data={postsArr}
-          renderItem={({item, index}) => (
-            <View
-              key={index}
-              style={styles.postContainer}
-              // onLayout={handleLayout}
-            >
-              <View style={styles.PostBox}>
-                <View style={styles.postHead}>
-                  <View style={styles.postUser}>
-                    <Image
-                      style={styles.postImg}
-                      source={{
-                        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZvNXJYdl0uUzKj7gqgpe_OxRtw2FFvH21k0Pyq0Q3Eh8X49bKtZlLjajfU2erdn7BQA&usqp=CAU',
-                      }}></Image>
-                    <View style={{marginLeft: 10}}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <Text style={styles.name}>joshua_I </Text>
-                        <Image
-                          style={{width: 12, height: 12}}
-                          source={{
-                            uri: 'https://www.pinpng.com/pngs/m/57-577224_free-png-download-instagram-verified-logo-png-images.png',
-                          }}></Image>
-                        <Text>{index}</Text>
-                      </View>
-                      <Text style={styles.postAddress}>Tokyo, Japan</Text>
-                    </View>
-                  </View>
-                  <View>
-                    <Text style={styles.postMenu}>...</Text>
-                  </View>
-                </View>
-
-                {/* <PostSwipers /> */}
-                <View style={styles.slide}>
-                  <Image
-                    style={styles.image}
-                    source={{
-                      uri: `${item}`,
-                    }}
-                  />
-                </View>
-                <View style={styles.LCSsave}>
-                  <View style={styles.LCSsaveLeft}>
-                    <Image
-                      source={require('../../assets/like.png')}
-                      style={{
-                        marginLeft: 16,
-                        width: 24,
-                        height: 24,
-                      }}></Image>
-                    {/* <LikeButton /> */}
-                    <Image
-                      source={require('../../assets/comment.png')}
-                      style={{
-                        marginLeft: 16,
-                        width: 24,
-                        height: 24,
-                      }}></Image>
-                    <Image
-                      source={require('../../assets/send.png')}
-                      style={{
-                        marginLeft: 16,
-                        width: 24,
-                        height: 24,
-                      }}></Image>
-                  </View>
-
-                  {/* <Text style={[styles.postMenu, {fontSize: 30}]}>...</Text> */}
-                  <View style={styles.LCSsaveRight}>
-                    <Image
-                      source={require('../../assets/save.png')}
-                      style={{width: 24, height: 22}}></Image>
-                  </View>
-                </View>
-                <View>
-                  <View style={{padding: 16}}>
-                    <View style={styles.LikedBy}>
-                      <Image
-                        source={{
-                          uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSngTgspjPM83-qZ3u1IgMgudydzr0eOfTA53jTekMNvy8jzG-53ZAnrm0moEcSjdcc96U&usqp=CAU',
-                        }}
-                        style={{
-                          width: 17,
-                          height: 17,
-                          borderRadius: 50,
-                          marginRight: 8,
-                        }}></Image>
-                      <Text>
-                        Liked by{' '}
-                        <Text style={{fontWeight: '500' as FontWeight}}>
-                          craig_love
-                        </Text>{' '}
-                        and{' '}
-                        <Text style={{fontWeight: '500' as FontWeight}}>
-                          121 others
-                        </Text>
-                      </Text>
-                    </View>
-
-                    <View style={styles.postComments}>
-                      <Text>
-                        <Text style={{fontWeight: '500' as FontWeight}}>
-                          joshua_I
-                        </Text>{' '}
-                        The game in Japan was amazng and I want to share some
-                        photos
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          )}
+          renderItem={renderItem}
         />
       ) : null}
     </View>
