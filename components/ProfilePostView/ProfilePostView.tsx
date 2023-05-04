@@ -8,30 +8,79 @@ import {
   Button,
   ActivityIndicator,
   VirtualizedList,
+  StatusBar,
+  Pressable,
 } from 'react-native';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {FontWeight} from '../../typeDefines';
 import PostSwipers from '../posts/PostSwipers';
 import {FlatList} from 'react-native-gesture-handler';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LikeButton from '../posts/LikeButton';
+import BigLike from '../posts/BigLike';
+import SinglePost from '../posts/SinglePost';
 const {width, height} = Dimensions.get('window');
 const ProfilePostView = ({route, navigation}) => {
-  const {ImgIndex, postsArr} = route.params;
+  const {ImgIndex} = route.params;
   const flatListRef = useRef(null);
+  const [MypostsArr, setMypostsArr] = useState([]);
   const [PostContainerHeight, setPostContainerHeight] = useState();
-  const scrollToIndex = index => {
+  const [ActivityLoading, setActivityLoading] = useState(true);
+  const scrollToIndexFunc = index => {
     console.log('inside function', index);
     flatListRef.current.scrollToIndex({animated: false, index});
   };
-  const scroltoindexfailed = ({info}) => {
-    const wait = new Promise(resolve => setTimeout(resolve, 2000));
+  const scroltoindexfailed = index => {
+    const wait = new Promise(resolve => setTimeout(resolve, 1000));
     wait.then(() => {
-      scrollToIndex(info.index);
+      scrollToIndexFunc(index);
+      setActivityLoading(false);
     });
   };
+
+  const [Liked, setLiked] = useState(false);
+
+  const [DoubleLiked, setDoubleLiked] = useState(false);
+  const [DoubleTrigg, setDoubleTrigg] = useState(false);
+  const [Comment, setComment] = useState(false);
+  const [Share, setShare] = useState(false);
+  const [lastPress, setLastPress] = useState(0);
+  const [timeDelta, setTimeDelta] = useState(0);
+  const handleDoubleClick = () => {
+    let delta = new Date().getTime() - lastPress;
+    console.log(delta);
+    if (delta < 210) {
+      setLiked(true);
+      setDoubleLiked(true);
+      setTimeDelta(delta);
+      setInterval(() => setDoubleLiked(false), 1500);
+    } else {
+      setTimeDelta(delta);
+    }
+    setLastPress(new Date().getTime());
+  };
+
+  const getMyPosts = async getkey => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(getkey);
+      // return jsonValue != null ? JSON.parse(jsonValue) : null;
+      if (jsonValue !== null) {
+        setMypostsArr(JSON.parse(jsonValue));
+        console.log(JSON.parse(jsonValue));
+      }
+    } catch (e) {
+      // error reading value
+      console.log('Error occured in fetching post from async storage');
+    }
+  };
+
+  useEffect(() => {
+    getMyPosts('MyPosts');
+  }, []);
   useEffect(() => {
     console.log('again');
-    scrollToIndex(ImgIndex);
+    setActivityLoading(true);
+    scroltoindexfailed(ImgIndex);
   }, [ImgIndex]);
 
   const handleLayout = event => {
@@ -44,14 +93,8 @@ const ProfilePostView = ({route, navigation}) => {
     title: `Item ${index + 1}`,
   });
 
-  const getItemCount = _data => postsArr.length;
-  const loading = () => {
-    return (
-      <View style={{flex: 1, backgroundColor: '#00075'}}>
-        <ActivityIndicator />;
-      </View>
-    );
-  };
+  const getItemCount = _data => MypostsArr.length;
+
   const renderItem = ({item, index}) => (
     <View
       key={index}
@@ -88,37 +131,50 @@ const ProfilePostView = ({route, navigation}) => {
           </View>
         </View>
 
-        {/* <PostSwipers /> */}
-        <View style={styles.slide}>
-          <Image
-            style={styles.image}
-            source={require('../../assets/sampleImg1.jpg')}
-          />
+        <View style={styles.postPhotu}>
+          {DoubleLiked ? (
+            <View
+              style={{
+                position: 'absolute',
+                zIndex: 1,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <BigLike />
+            </View>
+          ) : null}
+          {/* {multiple ? (
+            <SinglePost Likepost={handleDoubleClick} />
+          ) : (
+            <PostSwipers Likepost={handleDoubleClick} />
+          )} */}
+          <View style={styles.slide}>
+            <Pressable onPress={handleDoubleClick}>
+              <Image
+                style={styles.image}
+                source={require('../../assets/sampleImg1.jpg')}
+              />
+            </Pressable>
+          </View>
         </View>
+
         <View style={styles.LCSsave}>
           <View style={styles.LCSsaveLeft}>
-            <Image
-              source={require('../../assets/like.png')}
-              style={{
-                marginLeft: 16,
-                width: 24,
-                height: 24,
-              }}></Image>
-            {/* <LikeButton /> */}
-            <Image
-              source={require('../../assets/comment.png')}
-              style={{
-                marginLeft: 16,
-                width: 24,
-                height: 24,
-              }}></Image>
-            <Image
-              source={require('../../assets/send.png')}
-              style={{
-                marginLeft: 16,
-                width: 24,
-                height: 24,
-              }}></Image>
+            <LikeButton Doubletriggered={timeDelta} />
+            <Pressable>
+              <Image
+                source={require('../../assets/comment.png')}
+                style={{marginLeft: 16, width: 24, height: 24}}></Image>
+            </Pressable>
+            <Pressable>
+              <Image
+                source={require('../../assets/send.png')}
+                style={{marginLeft: 16, width: 24, height: 24}}></Image>
+            </Pressable>
           </View>
 
           {/* <Text style={[styles.postMenu, {fontSize: 30}]}>...</Text> */}
@@ -166,22 +222,27 @@ const ProfilePostView = ({route, navigation}) => {
   );
   return (
     <View>
-      {postsArr ? (
+      {ActivityLoading ? (
+        <View style={styles.loadingcss}>
+          <ActivityIndicator />
+        </View>
+      ) : null}
+      {MypostsArr ? (
         <VirtualizedList
           ref={flatListRef}
           getItemCount={getItemCount}
           getItem={getItem}
-          maxToRenderPerBatch={2 * postsArr.length + 1}
-          windowSize={2 * postsArr.length + 1}
+          maxToRenderPerBatch={2 * MypostsArr.length + 1}
+          windowSize={2 * MypostsArr.length + 1}
           onScrollToIndexFailed={info => {
-            scroltoindexfailed(info);
+            scroltoindexfailed(info.index);
           }}
           // getItemLayout={(data, index) => ({
           //   length: PostContainerHeight,
           //   offset: PostContainerHeight * index,
           //   index,
           // })}
-          data={postsArr}
+          data={MypostsArr}
           renderItem={renderItem}
         />
       ) : null}
@@ -260,5 +321,17 @@ const styles = StyleSheet.create({
     width: width,
     height: width,
     resizeMode: 'cover',
+  },
+  loadingcss: {
+    zIndex: 2,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'grey',
+    opacity: 0.9,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

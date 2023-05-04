@@ -15,6 +15,7 @@ import {FontWeight} from '../../../typeDefines';
 import {useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
 const {width, height} = Dimensions.get('window');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Mypost = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,7 +33,7 @@ const Mypost = () => {
 
   let postArray = [];
   const renderPosts = () => {
-    for (let i = 0; i < 160; i++) {
+    for (let i = 0; i < 10; i++) {
       postArray.push(`../../../assets/sampleImg1.jpg`);
     }
     // console.log(postArray);
@@ -42,7 +43,6 @@ const Mypost = () => {
 
     navigation.navigate('ProfilePostView', {
       ImgIndex: id,
-      postsArr: postsArr,
     });
   };
   const handleSingleProfileVew = id => {
@@ -55,7 +55,19 @@ const Mypost = () => {
   useEffect(() => {
     renderPosts();
     setPostArr([...postArray]);
+    storePost(postArray);
   }, []);
+
+  const storePost = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('MyPosts', jsonValue);
+    } catch (e) {
+      // saving error
+      console.log('error occured in storing post in async storage');
+    }
+  };
+
   return (
     <>
       {/* onLongPress={() => handleSingleProfileVew(id)}
@@ -71,6 +83,7 @@ const Mypost = () => {
                   <TouchableOpacity
                     key={id}
                     style={styles.myPost}
+                    delayPressIn={60}
                     onPress={() => handleProfilePostView(id)}>
                     <Image
                       source={require(`../../../assets/sampleImg1.jpg`)}

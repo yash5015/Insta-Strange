@@ -50,10 +50,15 @@ const HomeMain = () => {
         alwaysBounceHorizontal={false}
         alwaysBounceVertical={false}
         bounces={false}>
-        <InstaStories />
-        <InstaPosts />
-        <InstaPosts />
-        <InstaPosts />
+        <InstaStories multiple={false} />
+        <InstaPosts multiple={true} />
+        <InstaPosts multiple={false} />
+        <InstaPosts multiple={true} />
+        <InstaPosts multiple={false} />
+        <InstaPosts multiple={false} />
+        <InstaPosts multiple={true} />
+        <InstaPosts multiple={true} />
+        <InstaPosts multiple={false} />
       </ScrollView>
       {/* <FooterNavigation /> */}
     </View>

@@ -1,8 +1,51 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
 import React, {useState} from 'react';
 import {FontWeight} from '../../typeDefines';
 import PostSwipers from './PostSwipers';
-const InstaPosts = () => {
+import SinglePost from './SinglePost';
+import LikeButton from './LikeButton';
+import BigLike from './BigLike';
+
+const {height, width} = Dimensions.get('window');
+
+const InstaPosts = ({multiple}) => {
+  const [Liked, setLiked] = useState(false);
+
+  const [DoubleLiked, setDoubleLiked] = useState(false);
+  const [DoubleTrigg, setDoubleTrigg] = useState(false);
+  const [Comment, setComment] = useState(false);
+  const [Share, setShare] = useState(false);
+  const [lastPress, setLastPress] = useState(0);
+  const [timeDelta, setTimeDelta] = useState(0);
+  const handleDoubleClick = () => {
+    let delta = new Date().getTime() - lastPress;
+
+    if (delta < 210) {
+      console.log(delta, 'double clicked!!');
+      setLiked(true);
+      setDoubleLiked(true);
+      setTimeDelta(delta);
+      console.log('step first');
+      setInterval(() => {
+        setDoubleLiked(false);
+
+        console.log('step second');
+      }, 1000);
+      console.log('step Third');
+    } else {
+      setTimeDelta(delta);
+    }
+    setLastPress(new Date().getTime());
+  };
+
   return (
     <View style={styles.postContainer}>
       <View style={styles.PostBox}>
@@ -29,51 +72,41 @@ const InstaPosts = () => {
             <Text style={styles.postMenu}>...</Text>
           </View>
         </View>
-        {/* <View style={styles.postPhotu}>
-          <View
-            style={{
-              width: 34,
-              height: 26,
-              position: 'absolute',
-              zIndex: 1,
-              right: 0,
-              borderRadius: 19,
-              backgroundColor: '#12121270',
-              justifyContent: 'center',
-              marginRight: 12,
-              marginTop: 12,
-            }}>
-            <Text
-              style={[
-                styles.postMenu,
-                {
-                  fontWeight: '400' as FontWeight,
-                  fontSize: 12,
-                  color: 'white',
-                  textAlign: 'center',
-                },
-              ]}>
-              1/3
-            </Text>
-          </View>
-          <Image
-            source={{
-              uri: 'https://carpediemourway.com/wp-content/uploads/2021/03/Good-morning-captions-for-instagram-1.jpg',
-            }}
-            style={{width: 375, height: 375, resizeMode: 'cover'}}></Image>
-        </View> */}
-        <PostSwipers />
+        <View style={styles.postPhotu}>
+          {DoubleLiked ? (
+            <View
+              style={{
+                position: 'absolute',
+                zIndex: 1,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <BigLike />
+            </View>
+          ) : null}
+          {multiple ? (
+            <SinglePost Likepost={handleDoubleClick} />
+          ) : (
+            <PostSwipers Likepost={handleDoubleClick} />
+          )}
+        </View>
         <View style={styles.LCSsave}>
           <View style={styles.LCSsaveLeft}>
-            <Image
-              source={require('../../assets/like.png')}
-              style={{marginLeft: 16, width: 24, height: 24}}></Image>
-            <Image
-              source={require('../../assets/comment.png')}
-              style={{marginLeft: 16, width: 24, height: 24}}></Image>
-            <Image
-              source={require('../../assets/send.png')}
-              style={{marginLeft: 16, width: 24, height: 24}}></Image>
+            <LikeButton Doubletriggered={timeDelta} />
+            <Pressable>
+              <Image
+                source={require('../../assets/comment.png')}
+                style={{marginLeft: 16, width: 24, height: 24}}></Image>
+            </Pressable>
+            <Pressable>
+              <Image
+                source={require('../../assets/send.png')}
+                style={{marginLeft: 16, width: 24, height: 24}}></Image>
+            </Pressable>
           </View>
 
           {/* <Text style={[styles.postMenu, {fontSize: 30}]}>...</Text> */}
@@ -144,7 +177,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700' as FontWeight,
   },
-
+  image: {
+    width: width,
+    height: width,
+    resizeMode: 'cover',
+  },
   LCSsave: {
     width: '100%',
     position: 'relative',

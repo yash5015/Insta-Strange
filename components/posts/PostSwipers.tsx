@@ -1,5 +1,12 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Text, View, Image, Dimensions, StyleSheet} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  Dimensions,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 const {width} = Dimensions.get('window');
 import PaginationDot from 'react-native-animated-pagination-dot';
@@ -41,7 +48,7 @@ const postImages = [
   },
 ];
 
-const PostSwipers = (): JSX.Element => {
+const PostSwipers = ({Likepost}): JSX.Element => {
   const [curPage, setCurPage] = useState(0);
   return (
     <View>
@@ -54,12 +61,14 @@ const PostSwipers = (): JSX.Element => {
         }}>
         {postImages.map((item, id) => (
           <View key={id} style={styles.slide}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: `${item.imgurl}`,
-              }}
-            />
+            <Pressable onPress={Likepost}>
+              <Image
+                style={styles.image}
+                source={{
+                  uri: `${item.imgurl}`,
+                }}
+              />
+            </Pressable>
           </View>
         ))}
       </Swiper>
